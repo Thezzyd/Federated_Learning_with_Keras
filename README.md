@@ -1,18 +1,18 @@
 # Uczenie federacyjne z wykorzystaniem modelu Keras
 ## Czym jest uczenie fedaracyjne
-Uczenie federacyjne (federated learning) to podejście do uczenia maszynowego, które pozwala urządzeniom na wspólne trenowanie współdzielonego modelu, przy jednoczesnym zachowaniu zdecentralizowanych i prywatnych danych treningowych na poszczególnych urządzeniach. Umożliwia to uczenie maszynowe bez konieczności przesyłania i przechowywania danych na centralnym serwerze lub w chmurze [1].
+Uczenie federacyjne (federated learning) to podejście do uczenia maszynowego, które pozwala urządzeniom na wspólne trenowanie współdzielonego modelu, przy jednoczesnym zachowaniu zdecentralizowanych i prywatnych danych treningowych na poszczególnych urządzeniach. Umożliwia to uczenie maszynowe bez konieczności przesyłania i przechowywania danych na centralnym serwerze lub w chmurze [[1]](https://gemmo.ai/federated-learning).
 
 |![federated_learning](/images/federated_learning.png) | 
 |:--:| 
-| *Rysunek 2. Uczenie federacyjne zobrazowane na ilustracji [1].* |
+| *Rysunek 2. Uczenie federacyjne zobrazowane na ilustracji [[1]](https://gemmo.ai/federated-learning).* |
 
 ## Jak odbywa się uczenie federacyjne?
-Proces na ogół rozpoczyna się od wstępnie wytrenowanego globalnego modelu utworzonego przez centralny serwer lub chmurę. Ten globalny model jest punktem wyjścia dla wszystkich uczestniczących urządzeń. Utworzony globalny model jest następnie wysyłany do uczestniczących w procesie urządzeń, czyli każde urządzenie otrzymuje model i przechowuje jego lokalną kopię. Na każdym urządzeniu lokalna kopia modelu jest trenowana za pomocą danych dostępnych lokalnie. Dane te zazwyczaj są generowane na podstawie interakcji użytkownika lub działań na samym urządzeniu. Lokalny proces szkolenia obejmuje wiele iteracji, dostosowując parametry modelu w celu poprawy jego wydajności. Po zakończeniu lokalnego szkolenia, zamiast wysyłać cały gotowy model z powrotem do centralnego serwera, wysyłane są tylko aktualizacje wprowadzone do modelu. Na centralnym serwerze otrzymane aktualizacje z wielu urządzeń są agregowane za pomocą uśredniania lub innych metod statystycznych. Ten proces agregacji łączy aktualizacje w celu utworzenia ulepszonej wersji modelu globalnego. Tak ulepszony globalny model jest następnie wysyłany z powrotem do urządzeń, a proces lokalnego szkolenia, aktualizacji i agregacji modelu jest kontynuowany przez określoną ilość iteracji [2,1]. 
+Proces na ogół rozpoczyna się od wstępnie wytrenowanego globalnego modelu utworzonego przez centralny serwer lub chmurę. Ten globalny model jest punktem wyjścia dla wszystkich uczestniczących urządzeń. Utworzony globalny model jest następnie wysyłany do uczestniczących w procesie urządzeń, czyli każde urządzenie otrzymuje model i przechowuje jego lokalną kopię. Na każdym urządzeniu lokalna kopia modelu jest trenowana za pomocą danych dostępnych lokalnie. Dane te zazwyczaj są generowane na podstawie interakcji użytkownika lub działań na samym urządzeniu. Lokalny proces szkolenia obejmuje wiele iteracji, dostosowując parametry modelu w celu poprawy jego wydajności. Po zakończeniu lokalnego szkolenia, zamiast wysyłać cały gotowy model z powrotem do centralnego serwera, wysyłane są tylko aktualizacje wprowadzone do modelu. Na centralnym serwerze otrzymane aktualizacje z wielu urządzeń są agregowane za pomocą uśredniania lub innych metod statystycznych. Ten proces agregacji łączy aktualizacje w celu utworzenia ulepszonej wersji modelu globalnego. Tak ulepszony globalny model jest następnie wysyłany z powrotem do urządzeń, a proces lokalnego szkolenia, aktualizacji i agregacji modelu jest kontynuowany przez określoną ilość iteracji [[1]](https://gemmo.ai/federated-learning) [2]. 
 
 ##	Model Keras
 Keras to wysokopoziomowa biblioteka sieci neuronowych napisana w języku Python. Zapewnia ona wygodny i przyjazny dla użytkownika interfejs do tworzenia, trenowania i oceny modeli sieci neuronowych. 
 
-Pierwszym krokiem przy pracy z modelem jest zdefiniowanie architektury. Do tworzenia modelu można użyć Sequential API lub Functional API. Sequential API pozwala na sekwencyjne układanie warstw, jedna na drugiej, co jest odpowiednie dla większości sieci neuronowych typu feedforward. Functional API zapewnia większą elastyczność, umożliwiając tworzenie złożonych modeli z wieloma wejściami i wyjściami, współdzielonymi warstwami lub nieliniowymi połączeniami. Po wybraniu interfejsu API można rozpocząć dodawanie warstw do modelu. Keras zapewnia różne typy warstw, takie jak gęste (w pełni połączone), konwolucyjne, rekurencyjne, łączące i inne. Każda warstwa jest odpowiedzialna za wykonywanie określonego rodzaju obliczeń na danych wejściowych i przekazywanie wyników do następnej warstwy. Dla każdej warstwy można określić liczbę jednostek, funkcje aktywacji i inne parametry. Po zdefiniowaniu architektury modelu i dodaniu warstw należy skompilować model. Podczas kompilacji określa się optymalizator, funkcję strat i metryki, które będą używane do trenowania i oceny modelu. Optymalizator określa algorytm używany do aktualizacji wag modelu podczas uczenia. Funkcja strat określa wydajność modelu i kieruje procesem optymalizacji. Metryki są używane do oceny wydajności modelu podczas szkolenia i testowania, takich jak dokładność czy precyzja. Gdy model już został skompilowany można przystąpić do standardowej procedury uczenia i ewaluacji jakości utworzonego modelu [3].
+Pierwszym krokiem przy pracy z modelem jest zdefiniowanie architektury. Do tworzenia modelu można użyć Sequential API lub Functional API. Sequential API pozwala na sekwencyjne układanie warstw, jedna na drugiej, co jest odpowiednie dla większości sieci neuronowych typu feedforward. Functional API zapewnia większą elastyczność, umożliwiając tworzenie złożonych modeli z wieloma wejściami i wyjściami, współdzielonymi warstwami lub nieliniowymi połączeniami. Po wybraniu interfejsu API można rozpocząć dodawanie warstw do modelu. Keras zapewnia różne typy warstw, takie jak gęste (w pełni połączone), konwolucyjne, rekurencyjne, łączące i inne. Każda warstwa jest odpowiedzialna za wykonywanie określonego rodzaju obliczeń na danych wejściowych i przekazywanie wyników do następnej warstwy. Dla każdej warstwy można określić liczbę jednostek, funkcje aktywacji i inne parametry. Po zdefiniowaniu architektury modelu i dodaniu warstw należy skompilować model. Podczas kompilacji określa się optymalizator, funkcję strat i metryki, które będą używane do trenowania i oceny modelu. Optymalizator określa algorytm używany do aktualizacji wag modelu podczas uczenia. Funkcja strat określa wydajność modelu i kieruje procesem optymalizacji. Metryki są używane do oceny wydajności modelu podczas szkolenia i testowania, takich jak dokładność czy precyzja. Gdy model już został skompilowany można przystąpić do standardowej procedury uczenia i ewaluacji jakości utworzonego modelu [[3]](https://keras.io/about/ ).
 
 ##	Zbiór danych wykorzystanych w projekcie - Fashion MNIST
 Fashion MNIST to popularny zbiór danych wykorzystywany do zadań klasyfikacji obrazów w dziedzinie uczenia maszynowego. Służy on jako trudniejsza alternatywa dla dobrze znanego zbioru danych MNIST (składający się z odręcznych obrazów cyfr). Zbiór danych Fashion MNIST koncentruje się na klasyfikacji obrazów różnych produktów modowych do różnych kategorii. 
@@ -29,11 +29,11 @@ Zbiór danych zawiera 60 000 obrazów w skali szarości do treningu i 10 000 obr
 * Bag,
 * Ankle boot.
   
-Zbiór danych Fashion MNIST jest szeroko stosowany do analizy porównawczej i oceny wydajności różnych algorytmów uczenia maszynowego i modeli głębokiego uczenia. Stanowi on trudniejsze zadanie w porównaniu do MNIST ze względu na większą złożoność obrazów mody i potrzebę rozróżnienia różnych rodzajów odzieży i akcesoriów [6].
+Zbiór danych Fashion MNIST jest szeroko stosowany do analizy porównawczej i oceny wydajności różnych algorytmów uczenia maszynowego i modeli głębokiego uczenia. Stanowi on trudniejsze zadanie w porównaniu do MNIST ze względu na większą złożoność obrazów mody i potrzebę rozróżnienia różnych rodzajów odzieży i akcesoriów [[6]](https://github.com/zalandoresearch/fashion-mnist ).
 
 |![federated_learning](/images/MNIST.png) | 
 |:--:| 
-| *Rysunek 2. Przykład obiektu dla każdej z występujących klas w zbiorze [5].* |
+| *Rysunek 2. Przykład obiektu dla każdej z występujących klas w zbiorze [[5]](https://katiecodes.io/006_imageClassificationWithFashionMNIST/006_imageClassificationWithFashionMNIST/ ).* |
 
 ## Framework Flower 
 Flower (flwr - Federated Learning in the Wild Research) to framework o otwartym kodzie źródłowym. Zapewnia zestaw narzędzi do budowania systemów uczenia federacyjnego. Charakterystyczne cechy frameworka flower to:
@@ -216,3 +216,21 @@ Dla pierwszych dwóch eksperymentów korzystających z mniejszej ilości danych 
 
 W przypadku, gdy dystrybucja obiektów na klientach była niezbalansowana, tj. dany klient posiadał obiekty w znacznej większości z wyznaczonych klas w porównaniu do reszty, jakość dla danych treningowych była bardzo wysoka, lecz jakość dla danych ewaluacyjnych była znacząco niższa (efekt uczenia modelu na niezbalansowanym zbiorze danych). W takich przypadkach federacyjne uczenie ma największą skuteczność. Łączona jest wtedy informacja odnośnie klasyfikacji obiektów jednej klasy na podstawie modelu z jednego klienta z informacjami odnośnie klasyfikacji obiektów innych klas na podstawie modelu z innych klientów. Otrzymujemy wtedy model globalny, który jest wstanie dobrze klasyfikować obiekty z wszystkich klas. 
 
+## Bibliografia
+[1]	Gemmo Team „Federated Learning: Predictive Model Without Data Sharing”, December 20, 2021  
+https://gemmo.ai/federated-learning   
+
+[2]	Qiang Yang, Yang Liu, Yong Cheng, Yan Kang, Tianjian Chen, Han Yu „Federated
+Learning”, 2020 by Morgan & Claypool
+
+[3]	Dokumentacja Keras  
+https://keras.io/about/ 
+
+[4]	Dokumentacja Flower  
+https://flower.dev/docs/ 
+
+[5]	KatieCodes „Exploring image classification with Fashion-MNIST”, January 10, 2021  
+https://katiecodes.io/006_imageClassificationWithFashionMNIST/006_imageClassificationWithFashionMNIST/ 
+
+[6]	Fashion-MNIST – repozytorium GitHub  
+https://github.com/zalandoresearch/fashion-mnist 
